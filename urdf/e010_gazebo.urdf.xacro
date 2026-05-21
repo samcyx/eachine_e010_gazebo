@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot name="eachine_e010" xmlns:xacro="http://www.ros.org/wiki/xacro">  
+  <xacro:include filename="$(find eachine_e010_description)/urdf/eachine-e010.urdf.xacro"/>
+  <xacro:macro name="motor_plugin" params="prefix turning_direction motor_number ">
+    <gazebo>
+        <plugin
+        filename="ignition-gazebo-multicopter-motor-model-system"
+        name="ignition::gazebo::systems::MulticopterMotorModel">
+        <robotNamespace>eachine_e010</robotNamespace>
+        <jointName>motor_to_prop_${prefix}</jointName>
+        <linkName>prop_${prefix}</linkName>
+        <turningDirection>${turning_direction}</turningDirection>
+        <motorConstant>1.22e-7</motorConstant>
+        <momentConstant>2.28e-4</momentConstant>
+        <maxRotVelocity>1309</maxRotVelocity>
+        <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
+        <motorSpeedPubTopic>motor_speed/${motor_number}</motorSpeedPubTopic>
+        <motorNumber>${motor_number}</motorNumber>
+        </plugin>
+    </gazebo>
+  </xacro:macro>
+
+    <xacro:motor_plugin prefix="front_left"  turning_direction="ccw" motor_number="1"/>
+    <xacro:motor_plugin prefix="front_right" turning_direction="cw" motor_number="2"/>
+    <xacro:motor_plugin prefix="rear_left"   turning_direction="cw" motor_number="3"/>
+    <xacro:motor_plugin prefix="rear_right"  turning_direction="ccw" motor_number="4"/>
+
+</robot>
